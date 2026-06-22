@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Link Engine">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <title>Link Engine</title>
+  <style>
+    :root { color-scheme: light; --bg:#f5f7fa; --panel:#fff; --text:#10202b; --muted:#607184; --line:#d8e0e7; --blue:#2563eb; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+    .shell { min-height: 100%; display: grid; grid-template-rows: auto 1fr; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(10px + env(safe-area-inset-top)) 12px 10px; background: var(--panel); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .mark { width: 32px; height: 32px; border-radius: 8px; background: #0f766e; color: white; display: grid; place-items: center; font-weight: 800; }
+    h1 { margin: 0; font-size: 17px; line-height: 1; letter-spacing: 0; }
+    small { display: block; color: var(--muted); margin-top: 3px; font-size: 12px; }
+    a.button { min-height: 38px; padding: 8px 12px; border-radius: 8px; background: var(--blue); color: white; display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; font-size: 13px; }
+    iframe { width: 100%; height: 100%; min-height: calc(100vh - 62px); border: 0; background: var(--bg); }
+    .fallback { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 8px; padding: 10px; box-shadow: 0 8px 28px rgba(15, 32, 43, .12); display: none; }
+    .fallback p { margin: 0 0 8px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="mark">L</div>
+        <div>
+          <h1>Link Engine</h1>
+          <small>System monitor</small>
+        </div>
+      </div>
+      <a class="button" href="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" rel="noopener">Open</a>
+    </header>
+    <iframe title="Link Engine Monitor" src="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <div class="fallback" id="fallback">
+    <p>If the secure Google monitor asks to sign in or does not load inside the frame, open it directly once in Safari.</p>
+    <a class="button" href="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" rel="noopener">Open secure monitor</a>
+  </div>
+  <script>
+    setTimeout(function () { document.getElementById('fallback').style.display = 'block'; }, 6000);
+  </script>
+</body>
+</html>
