@@ -1,4 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <rect width="128" height="128" rx="28" fill="#0f766e"/>
-  <path d="M35 76h18v17H35V76Zm0-41h18v32H35V35Zm29 23h18v35H64V58Zm29-18h18v53H93V40Z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Link Engine">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="432" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#082f49"/>
+      <stop offset=".55" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="318" y1="120" x2="430" y2="246" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M112 355c72-96 161-158 288-198" fill="none" stroke="#99f6e4" stroke-width="18" stroke-linecap="round" opacity=".22"/>
+  <circle cx="130" cy="352" r="17" fill="#ccfbf1" opacity=".48"/>
+  <circle cx="253" cy="252" r="14" fill="#ccfbf1" opacity=".42"/>
+  <circle cx="386" cy="164" r="17" fill="#ccfbf1" opacity=".48"/>
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="42">
+    <path d="M213 316l-26 26c-37 37-97 37-134 0s-37-97 0-134l54-54c37-37 97-37 134 0 10 10 18 22 23 35"/>
+    <path d="M299 196l26-26c37-37 97-37 134 0s37 97 0 134l-54 54c-37 37-97 37-134 0-10-10-18-22-23-35"/>
+    <path d="M181 331l150-150" opacity=".92"/>
+  </g>
+  <circle cx="371" cy="151" r="52" fill="url(#gold)"/>
+  <path d="M352 151h38m-19-19v38" stroke="#082f49" stroke-width="17" stroke-linecap="round"/>
 </svg>
