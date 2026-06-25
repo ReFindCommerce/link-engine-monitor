@@ -10,48 +10,283 @@
   <meta name="theme-color" content="#0f766e">
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">
   <title>Link Engine</title>
   <style>
-    :root { color-scheme: light; --bg:#f5f7fa; --panel:#fff; --text:#10202b; --muted:#607184; --line:#d8e0e7; --blue:#2563eb; }
+    :root {
+      color-scheme: light;
+      --bg: #f4f7f8;
+      --panel: #fff;
+      --text: #10202b;
+      --muted: #627386;
+      --line: #d9e2e8;
+      --good: #0f766e;
+      --warn: #b7791f;
+      --bad: #b42318;
+      --blue: #2563eb;
+      --shadow: 0 12px 34px rgba(16, 32, 43, .08);
+    }
     * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
-    .shell { min-height: 100%; display: grid; grid-template-rows: auto 1fr; }
-    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(10px + env(safe-area-inset-top)) 12px 10px; background: var(--panel); border-bottom: 1px solid var(--line); }
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .mark { width: 32px; height: 32px; border-radius: 8px; box-shadow: 0 5px 14px rgba(15, 118, 110, .24); }
-    .mark img { width: 32px; height: 32px; display: block; border-radius: 8px; }
-    h1 { margin: 0; font-size: 17px; line-height: 1; letter-spacing: 0; }
-    small { display: block; color: var(--muted); margin-top: 3px; font-size: 12px; }
-    a.button { min-height: 38px; padding: 8px 12px; border-radius: 8px; background: var(--blue); color: white; display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; font-size: 13px; }
-    iframe { width: 100%; height: 100%; min-height: calc(100vh - 62px); border: 0; background: var(--bg); }
-    .fallback { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 8px; padding: 10px; box-shadow: 0 8px 28px rgba(15, 32, 43, .12); display: none; }
-    .fallback p { margin: 0 0 8px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.35;
+    }
+    main {
+      margin: 0 auto;
+      max-width: 980px;
+      padding: calc(18px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .brand img { width: 42px; height: 42px; border-radius: 10px; box-shadow: 0 7px 20px rgba(15, 118, 110, .24); }
+    h1 { margin: 0; font-size: 24px; line-height: 1.05; letter-spacing: 0; }
+    .subtle, small { color: var(--muted); font-size: 13px; }
+    .status {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 7px solid var(--good);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin: 0 0 12px;
+      padding: 14px;
+    }
+    .status.warn { border-left-color: var(--warn); }
+    .status.bad { border-left-color: var(--bad); }
+    .status strong { display: block; font-size: 17px; margin-bottom: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .metric, section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .metric { min-height: 92px; padding: 13px; }
+    .metric strong { display: block; font-size: 34px; line-height: 1; margin-bottom: 7px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    section { margin: 10px 0; padding: 14px; }
+    h2 { font-size: 17px; line-height: 1.1; margin: 0 0 10px; letter-spacing: 0; }
+    .facts { display: grid; gap: 9px; }
+    .fact { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 9px; }
+    .fact:first-child { border-top: 0; padding-top: 0; }
+    .fact span { color: var(--muted); font-size: 13px; }
+    .fact strong { text-align: right; font-size: 13px; overflow-wrap: anywhere; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { border-top: 1px solid var(--line); padding: 10px 0; }
+    li:first-child { border-top: 0; }
+    li span { display: block; font-size: 14px; }
+    li small { display: block; margin-top: 2px; }
+    .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+    button, .button {
+      align-items: center;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      display: flex;
+      font: inherit;
+      font-weight: 700;
+      justify-content: center;
+      min-height: 44px;
+      padding: 9px 12px;
+      text-align: center;
+      text-decoration: none;
+    }
+    button { cursor: pointer; }
+    .primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .okText { color: var(--good); }
+    .warnText { color: var(--warn); }
+    .badText { color: var(--bad); }
+    .loading { opacity: .64; }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .actions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body>
-  <div class="shell">
+  <main>
     <header>
       <div class="brand">
-        <div class="mark"><img src="/icon.svg" alt=""></div>
+        <img src="/icon.svg" alt="">
         <div>
           <h1>Link Engine</h1>
-          <small>System monitor</small>
+          <div class="subtle">Cloud automation monitor</div>
         </div>
       </div>
-      <a class="button" href="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" rel="noopener">Open</a>
+      <button id="refreshButton" type="button">Refresh</button>
     </header>
-    <iframe title="Link Engine Monitor" src="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" referrerpolicy="no-referrer-when-downgrade"></iframe>
-  </div>
-  <div class="fallback" id="fallback">
-    <p>If the secure Google monitor asks to sign in or does not load inside the frame, open it directly once in Safari.</p>
-    <a class="button" href="https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec?monitor=1" rel="noopener">Open secure monitor</a>
-  </div>
+
+    <div id="statusCard" class="status">
+      <strong>Loading live automation status...</strong>
+      <span class="subtle">This app is hosted separately from the publisher, so loading it does not affect scheduled posting.</span>
+    </div>
+
+    <div class="grid" aria-label="Automation metrics">
+      <div class="metric"><strong id="liveMetric">-</strong><span>Live</span></div>
+      <div class="metric"><strong id="failedMetric">-</strong><span>Failed</span></div>
+      <div class="metric"><strong id="dueMetric">-</strong><span>Auto due</span></div>
+      <div class="metric"><strong id="queuedMetric">-</strong><span>Auto queued</span></div>
+      <div class="metric"><strong id="heldMetric">-</strong><span>Held, not cloud-safe</span></div>
+    </div>
+
+    <section>
+      <h2>Schedule</h2>
+      <div class="facts">
+        <div class="fact"><span>Computer required</span><strong>No, cloud-safe routes run in Google</strong></div>
+        <div class="fact"><span>Publisher</span><strong>Every 2 hours</strong></div>
+        <div class="fact"><span>Daily agents</span><strong>Every day around 08:00</strong></div>
+        <div class="fact"><span>Triggers</span><strong id="triggersFact">Checking</strong></div>
+        <div class="fact"><span>Last publisher</span><strong id="lastPublisherFact">Checking</strong></div>
+        <div class="fact"><span>Next cloud item</span><strong id="nextNativeFact">Checking</strong></div>
+        <div class="fact"><span>Daily limit</span><strong id="dailyLimitFact">Checking</strong></div>
+      </div>
+    </section>
+
+    <section id="watchSection" hidden>
+      <h2>Watch List</h2>
+      <ul id="watchList"></ul>
+    </section>
+
+    <section id="warningSection" hidden>
+      <h2>Warnings</h2>
+      <ul id="warningList"></ul>
+    </section>
+
+    <section id="runsSection" hidden>
+      <h2>Recent Runs</h2>
+      <ul id="runsList"></ul>
+    </section>
+
+    <div class="actions">
+      <a class="button primary" id="dashboardLink" href="#">Dashboard</a>
+      <a class="button" id="reportLink" href="#">Report</a>
+      <a class="button" id="publisherLink" href="#">Publisher</a>
+      <a class="button" id="secureMonitorLink" href="#">Google monitor</a>
+    </div>
+  </main>
+
   <script>
-    setTimeout(function () { document.getElementById('fallback').style.display = 'block'; }, 6000);
+    const SCRIPT_BASE = 'https://script.google.com/a/macros/refindcommerce.com/s/AKfycbyOORUNOAjSJO5_TyRQcbB8V52z2PpDnUByW1UT7m4phrTrR9cd_JUMX5eZT9GRW2H-/exec';
+    const REPORT_URL = SCRIPT_BASE + '?automation=1';
+    const REFRESH_MS = 5 * 60 * 1000;
+    let refreshTimer = null;
+
+    const el = (id) => document.getElementById(id);
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[char]));
+    }
+
+    function jsonp(url, timeoutMs) {
+      return new Promise((resolve, reject) => {
+        const callbackName = '__linkEngineReport_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+        const script = document.createElement('script');
+        const timeout = window.setTimeout(() => {
+          cleanup();
+          reject(new Error('Live report timed out. Open the Google monitor once if sign-in is needed.'));
+        }, timeoutMs || 20000);
+        function cleanup() {
+          window.clearTimeout(timeout);
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+        window[callbackName] = (payload) => {
+          cleanup();
+          resolve(payload || {});
+        };
+        script.onerror = () => {
+          cleanup();
+          reject(new Error('Live report could not load from Google.'));
+        };
+        script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + encodeURIComponent(callbackName) + '&t=' + Date.now();
+        document.head.appendChild(script);
+      });
+    }
+
+    function reportRunText(run) {
+      if (!run || !run.startedAt) return 'not logged yet';
+      const when = String(run.startedAt).slice(0, 19).replace('T', ' ');
+      return when + (run.status ? ' (' + run.status + ')' : '');
+    }
+
+    function reportNextText(next) {
+      if (!next) return 'none scheduled';
+      return [next.title || next.platform, next.publishDate, next.publishTime, next.timezone].filter(Boolean).join(' ');
+    }
+
+    function setStatus(report) {
+      const automation = report.automation || {};
+      const failed = Number((report.queue && report.queue.failed) || automation.failed || 0);
+      const health = String(report.healthStatus || '').toLowerCase();
+      const statusCard = el('statusCard');
+      statusCard.className = 'status' + (health === 'fail' ? ' bad' : (health === 'warning' || failed ? ' warn' : ''));
+      const title = automation.plainStatus || (failed ? 'Automation is running, with failed items to review.' : 'Cloud automation is running.');
+      statusCard.innerHTML = '<strong>' + escapeHtml(title) + '</strong><span class="subtle">Cloud-safe publishing continues from Google even if this computer is off. Browser-login routes stay held.</span>';
+    }
+
+    function setMetric(id, value) {
+      el(id).textContent = String(value == null ? 0 : value);
+    }
+
+    function renderList(sectionId, listId, rows, renderer) {
+      const section = el(sectionId);
+      const list = el(listId);
+      section.hidden = !rows.length;
+      list.innerHTML = rows.map(renderer).join('');
+    }
+
+    function render(report) {
+      const queue = report.queue || {};
+      const automation = report.automation || {};
+      setStatus(report);
+      setMetric('liveMetric', queue.liveRecorded || 0);
+      setMetric('failedMetric', queue.failed || 0);
+      setMetric('dueMetric', queue.nativeDue || 0);
+      setMetric('queuedMetric', queue.nativeReady || 0);
+      setMetric('heldMetric', queue.browserHeld || 0);
+      el('triggersFact').textContent = automation.triggersInstalled ? 'Installed' : 'Needs setup';
+      el('lastPublisherFact').textContent = reportRunText(automation.lastPublisherRun);
+      el('nextNativeFact').textContent = reportNextText(automation.nextNativeScheduled);
+      el('dailyLimitFact').textContent = String(automation.dailyLimit || 0);
+      renderList('watchSection', 'watchList', report.guidance || [], (item) => '<li><span>' + escapeHtml(item) + '</span></li>');
+      renderList('warningSection', 'warningList', report.warnings || [], (item) => '<li><span>' + escapeHtml(item.name || 'Warning') + '</span><small>' + escapeHtml(item.message || '') + '</small></li>');
+      renderList('runsSection', 'runsList', report.lastRuns || [], (run) => '<li><span>' + escapeHtml(run.agent || 'Agent') + '</span><small>' + escapeHtml(reportRunText(run)) + '</small></li>');
+    }
+
+    async function loadReport() {
+      document.body.classList.add('loading');
+      try {
+        const report = await jsonp(REPORT_URL, 20000);
+        render(report);
+      } catch (error) {
+        const statusCard = el('statusCard');
+        statusCard.className = 'status warn';
+        statusCard.innerHTML = '<strong>Open Google once to refresh access</strong><span class="subtle">' + escapeHtml(error.message || error) + '</span>';
+      } finally {
+        document.body.classList.remove('loading');
+        window.clearTimeout(refreshTimer);
+        refreshTimer = window.setTimeout(loadReport, REFRESH_MS);
+      }
+    }
+
+    el('refreshButton').addEventListener('click', loadReport);
+    el('dashboardLink').href = SCRIPT_BASE;
+    el('reportLink').href = SCRIPT_BASE + '?automationReport=1';
+    el('publisherLink').href = SCRIPT_BASE + '?runPublisher=1';
+    el('secureMonitorLink').href = SCRIPT_BASE + '?monitor=1';
+    loadReport();
   </script>
 </body>
 </html>
